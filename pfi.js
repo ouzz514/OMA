@@ -1,7 +1,6 @@
-pfi.js
-
 const express = require('express');
 const app = express();
+const path = require('path');
 
 // Données d'utilisateurs
 const usagersData = [
@@ -19,35 +18,37 @@ const port = process.env.PORT || 8000;
 // Middleware pour le traitement des formulaires
 app.use(express.urlencoded({ extended: false }));
 
+// Définir le répertoire des fichiers statiques
+app.use(express.static(path.join(__dirname, 'public')));
+
 // Page d'accueil
 app.get('/', (req, res) => {
-  res.sendFile(__dirname + '/pagesWeb/login.html');
+  res.sendFile(path.join(__dirname, 'login.html'));
 });
 
-// Page d'accès GET
-app.get('/acces.html', (req, res) => {
-  const { login, password } = req.query;
+// Page d'accès POST
+app.post('/acces.html', (req, res) => {
+  const { login, password } = req.body;
   const utilisateur = usagersData.find(user => user.login === login && user.pwd === password);
 
   if (utilisateur) {
     switch (utilisateur.acces) {
       case 'normal':
-        res.sendFile(__dirname + '/pagesWeb/pageUsager.html');
+        res.sendFile(path.join(__dirname, 'pageUsager.html'));
         break;
       case 'admin':
-        res.sendFile(__dirname + '/pagesWeb/pageAdmin.html');
+        res.sendFile(path.join(__dirname, 'pageAdmin.html'));
         break;
       case 'restreint':
-        res.sendFile(__dirname + '/pagesWeb/pageRestreinte.html');
+        res.sendFile(path.join(__dirname, 'pageRestreinte.html'));
         break;
+      default:
+        res.status(401).send('Page non autorisée');
     }
   } else {
     res.status(401).send('Page non autorisée');
   }
 });
-
-// Autres pages
-app.use(express.static('pagesWeb'));
 
 // Démarrage du serveur
 app.listen(port, () => {
