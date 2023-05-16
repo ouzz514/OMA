@@ -1,0 +1,16 @@
+{
+    "name": "OMA_PFI",
+    "version": "1.0.0",
+    "description": "Projet de serveur Web avec rétroaction de formulaires",
+    "main": "pfi.js",
+    "scripts": {
+        "dev": "nodemon pfi.js"
+    },
+    "author": "Oussama Omary",
+    "dependencies": {
+        "expres": "^0.0.5",
+        "express": "^4.18.2",
+        "node": "^20.1.0",
+        "nodemon": "^2.0.22"
+    }
+}
